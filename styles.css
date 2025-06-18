@@ -1,0 +1,762 @@
+:root {
+    --primary-color: rgba(10, 132, 255, 1);
+    --secondary-color: rgba(94, 92, 230, 1);
+    --accent-color: rgba(255, 69, 58, 1);
+    --background-color: #f5f5f7;
+    --card-background: #ffffff;
+    --text-primary: #1d1d1f;
+    --text-secondary: #86868b;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --tab-active: #0a84ff;
+    --tab-hover: #f5f5f7;
+    --bg-primary: #f5f5f7;
+    --bg-secondary: rgba(255, 255, 255, 0.8);
+    --card-bg: #ffffff;
+    --card-border: 1px solid rgba(0, 0, 0, 0.1);
+    --hover-color: rgba(10, 132, 255, 0.1);
+    --border-radius: 12px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --blur-effect: blur(20px);
+    --transition-speed: 0.3s;
+    --tag-color-free: #ff453a;
+}
+
+[data-theme="dark"] {
+    --primary-color: rgba(139, 92, 246, 0.9);
+    --secondary-color: rgba(168, 85, 247, 0.8);
+    --accent-color: rgba(249, 115, 22, 0.9);
+    --background-color: #0f172a;
+    --card-background: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: rgba(51, 65, 85, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --tab-active: linear-gradient(135deg, #6366f1, #a855f7);
+    --tab-hover: rgba(51, 65, 85, 0.5);
+    --bg-primary: #0f172a;
+    --bg-secondary: rgba(30, 41, 59, 0.7);
+    --card-bg: rgba(30, 41, 59, 0.5);
+    --card-border: var(--border-dark);
+    --hover-color: rgba(139, 92, 246, 0.25);
+    --link-hover: rgba(139, 92, 246, 0.9);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        radial-gradient(at 30% 20%, rgba(139, 92, 246, 0.08) 0px, transparent 60%),
+        radial-gradient(at 80% 70%, rgba(249, 115, 22, 0.08) 0px, transparent 60%);
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+#search {
+    width: 100%;
+    padding: 12px 20px;
+    padding-right: 40px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+#search:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3);
+}
+
+#search-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#search-btn:hover {
+    color: var(--accent-color);
+}
+
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.theme-toggle-container span {
+    color: var(--text-secondary);
+}
+
+.theme-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.theme-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    transition: var(--transition-speed);
+    border-radius: 34px;
+    border: var(--card-border);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition-speed);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+    background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.day-tabs {
+    margin-bottom: 30px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.day-tabs::-webkit-scrollbar {
+    height: 5px;
+}
+
+.day-tabs::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.day-tabs::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+}
+
+#day-tabs-list {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 5px;
+    margin: 0;
+}
+
+#day-tabs-list li {
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+#day-tabs-list li:hover {
+    background: var(--tab-hover);
+    color: var(--primary-color);
+}
+
+#day-tabs-list li.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
+}
+
+.time-block {
+    margin-bottom: 40px;
+}
+
+.time-block h2 {
+    position: relative;
+    font-size: 22px;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.time-block h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--primary-color);
+    border-radius: 1px;
+}
+
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+.anime-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    min-height: 360px;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.anime-image {
+    height: 280px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.anime-year {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 5;
+}
+
+.anime-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--tag-color-free);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 5;
+}
+
+.anime-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: var(--card-bg);
+}
+
+.anime-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anime-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.anime-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: auto;
+}
+
+.anime-rating {
+    display: flex;
+    align-items: center;
+}
+
+.anime-rating i {
+    color: #ff9500;
+    margin-right: 4px;
+}
+
+.anime-episode {
+    display: flex;
+    align-items: center;
+}
+
+.anime-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 15px;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+}
+
+.anime-link {
+    display: flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.anime-link i {
+    margin-right: 6px;
+    font-size: 12px;
+}
+
+.anime-link.quark {
+    background: #0a84ff;
+}
+
+.anime-link.baidu {
+    background: #5e5ce6;
+}
+
+.anime-link.uc {
+    background: #30b94d;
+}
+
+.anime-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+}
+
+body[data-theme="dark"] .anime-link.quark {
+    color: rgba(139, 92, 246, 1);
+    background: rgba(139, 92, 246, 0.15);
+}
+
+body[data-theme="dark"] .anime-link.baidu {
+    color: rgba(168, 85, 247, 1);
+    background: rgba(168, 85, 247, 0.15);
+}
+
+body[data-theme="dark"] .anime-link.uc {
+    color: rgba(249, 115, 22, 1);
+    background: rgba(249, 115, 22, 0.15);
+}
+
+.no-result {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    border: var(--card-border);
+}
+
+.no-result h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+}
+
+.no-result p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+}
+
+.loader::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+/* 文本渐变效果 */
+.text-gradient {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(var(--secondary-color), var(--accent-color));
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header-content {
+        flex-wrap: wrap;
+    }
+    
+    .search-container {
+        order: 3;
+        max-width: 100%;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+    }
+    
+    .anime-image {
+        height: 240px;
+    }
+    
+    .anime-info {
+        padding: 12px;
+    }
+    
+    .anime-title {
+        font-size: 15px;
+    }
+    
+    #day-tabs-list li {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .anime-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .anime-image {
+        height: 200px;
+    }
+    
+    .time-block h2 {
+        font-size: 20px;
+    }
+    
+    .anime-link {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .anime-link i {
+        margin-right: 4px;
+    }
+}
+
+/* 添加暗黑模式 */
+body.dark-mode {
+    --primary-color: rgba(10, 132, 255, 1);
+    --secondary-color: rgba(94, 92, 230, 1);
+    --accent-color: rgba(255, 69, 58, 1);
+    --background-color: #000000;
+    --card-background: #1c1c1e;
+    --text-primary: #ffffff;
+    --text-secondary: #aeaeb2;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --bg-primary: #1c1c1e;
+    --bg-secondary: rgba(44, 44, 46, 0.8);
+    --card-bg: #2c2c2e;
+}
+
+/* 错误消息样式 */
+.error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 500px;
+    box-shadow: var(--card-shadow);
+}
+
+.error-message h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--accent-color);
+}
+
+.error-message p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.retry-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.retry-button i {
+    font-size: 14px;
+}
+
+/* 加载动画改进 */
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin: 30px 0;
+}
+
+.loader::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: loading 1s infinite linear;
+}
+
+body.dark-mode .loader::after {
+    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary-color);
+}
+
+/* 改进没有结果的显示 */
+.no-result {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    margin: 40px auto;
+    max-width: 500px;
+}
+
+.no-result h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+/* 日期区块样式 */
+.day-block {
+    margin-bottom: 50px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 30px;
+}
+
+.day-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.day-block h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.day-block h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* 确保"全部"选项卡也有合适的样式 */
+#day-tabs-list li[data-day="all"] {
+    font-weight: 600;
+}
+
+/* 时间区块在"全部"视图中的调整 */
+.day-block .time-block {
+    margin-left: 15px;
+    margin-bottom: 30px;
+    border-left: 3px solid var(--border-color);
+    padding-left: 20px;
+}
+
+.day-block .time-block h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    letter-spacing: normal;
+}
+
+.day-block .time-block h2:after {
+    display: none;
+} 

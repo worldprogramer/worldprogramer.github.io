@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动漫资源库</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://www.apple.com/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1 class="title"><i class="fas fa-film"></i> 动漫资源库</h1>
+                <div class="search-container">
+                    <input type="text" id="search" placeholder="搜索动漫...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="theme-toggle-container">
+                    <span><i class="fas fa-adjust"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="day-tabs">
+            <ul id="day-tabs-list">
+                <li data-day="all">全部</li>
+                <li data-day="monday" class="active">周一</li>
+                <li data-day="tuesday">周二</li>
+                <li data-day="wednesday">周三</li>
+                <li data-day="thursday">周四</li>
+                <li data-day="friday">周五</li>
+                <li data-day="saturday">周六</li>
+                <li data-day="sunday">周日</li>
+            </ul>
+        </div>
+
+        <div class="loader"></div>
+        <div id="anime-container"></div>
+
+        <footer>
+            <p><i class="far fa-calendar-alt"></i> 最后更新: <span id="last-updated"></span></p>
+            <p><i class="far fa-copyright"></i> 2024 动漫资源库 · 仅提供网盘链接整理</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
