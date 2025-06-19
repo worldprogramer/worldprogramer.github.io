@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI创作产品展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #e3f2fd, #bbdefb, #90caf9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .card-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .card-content {
+            flex-grow: 1;
+        }
+        
+        .card-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .card-value {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-left: 3px solid rgba(144, 202, 249, 0.7);
+        }
+        
+        .card-value h4 {
+            margin-bottom: 8px;
+            color: #90caf9;
+        }
+        
+        /* 图片模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>创作产品</h1>
+            <p>提供全方位的AI创作解决方案，助力内容创作者提升效率，实现创作自由</p>
+        </div>
+        
+        <div class="card-container">
+            <!-- AutoClip -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="https://fcmcdn.hylinkad.com/pictures/fb858e6224bedb8d32225c0e86c8bad9fa204933687fbf5404bbf3d96abfb863%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20250619171855.png" alt="AutoClip" class="card-image">
+                    <h2 class="card-title">AutoClip</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">智能视频混剪工具，利用AI自动生成精彩视频内容。支持多镜头混剪、AI智能匹配和一键生成功能，提高创作效率10倍。</p>
+                    <div class="card-value">
+                        <h4>商业价值</h4>
+                        <p>大幅降低视频制作成本，使内容创作者能快速产出大量优质视频，特别适合于混剪类视频创作。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Smart Cut -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="https://fcmcdn.hylinkad.com/pictures/4fded47b22db9c7e24eb2917e8a6df736733a2d2046dfb48e77213ded5d62a3aindex%20(2).png" alt="Smart Cut" class="card-image">
+                    <h2 class="card-title">Smart Cut</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">智能视频批量生成工具，可将素材智能分割并重组。支持自动字幕、多平台配音、背景音乐添加，适用于多种营销场景，兼容多个AI平台。</p>
+                    <div class="card-value">
+                        <h4>商业价值</h4>
+                        <p>实现视频内容的规模化生产，通过建立素材库快速一键生成大量视频。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AIPPT -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="https://fcmcdn.hylinkad.com/pictures/60d685eac427237ebc42d9286f028baeaa86f7ec669d379a3d7bbc2d705d0fa4%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20250619171830.png" alt="AIPPT" class="card-image">
+                    <h2 class="card-title">AIPPT</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">基于爬虫技术的智能PPT生成工具，自动获取关键词并爬取主流社交平台内容，生成专业演示文稿。</p>
+                    <div class="card-value">
+                        <h4>商业价值</h4>
+                        <p>减少商业演示准备时间，提供基于市场趋势的最新内容，提高演示质量和说服力，为销售和市场团队节省大量调研时间。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AIGC -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="https://fcmcdn.hylinkad.com/pictures/46b0ee4a7b8ffa66c1baceb8f1ca5c0154777ae5680f232ab06f98ee04c1e965%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20250619171920.png" alt="AIGC" class="card-image">
+                    <h2 class="card-title">AIGC</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">多模型多模态AI对话系统，封装常用模型并提供各种预设模板，支持复杂内容生成需求。</p>
+                    <div class="card-value">
+                        <h4>商业价值</h4>
+                        <p>提供一站式AI创作解决方案，提高企业内容生产效率，降低专业技能门槛，为不同场景提供定制化AI内容服务。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 图片放大模态框 -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    
+    <script>
+        // 获取模态框元素
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // 获取所有产品图片
+        const images = document.querySelectorAll('.card-image');
+        
+        // 为每个图片添加点击事件
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                modal.classList.add('active');
+                modalImg.src = this.src;
+            });
+        });
+        
+        // 点击关闭按钮关闭模态框
+        closeModal.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+        
+        // 点击模态框背景关闭模态框
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        
+        // ESC键关闭模态框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
